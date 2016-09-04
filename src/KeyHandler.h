@@ -14,14 +14,14 @@ class KeyHandler {
 public:
     KeyHandler() {};
 
-    bool isKeyDown(int key_code);
+    bool isKeyDown(int keyCode);
 
-    void pressKey(int key_code);
+    void pressKey(int keyCode);
 
-    void liftKey(int key_code);
+    void liftKey(int keyCode);
 
 private:
-    std::unordered_set<int> fKeysDown;
+    std::unordered_set<int> m_keysDown;
 
 };
 

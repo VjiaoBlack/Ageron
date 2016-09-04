@@ -15,22 +15,22 @@ bool Game::init() {
         success = false;
     } else {
         // Create window
-        fRenderer.fSDLWindow = SDL_CreateWindow("Ageron",
+        m_renderer.m_SDLWindow = SDL_CreateWindow("Ageron",
                                    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   fRenderer.fWidth, fRenderer.fHeight, SDL_WINDOW_SHOWN);
-        if (fRenderer.fSDLWindow == NULL) {
+                                   m_renderer.m_width, m_renderer.m_height, SDL_WINDOW_SHOWN);
+        if (m_renderer.m_SDLWindow == NULL) {
             printf("Window could not be created - SDL Error: %s\n", SDL_GetError());
             success = false;
         } else {
-            // Create fRenderer for window
-            fRenderer.fSDLRenderer = SDL_CreateRenderer(fRenderer.fSDLWindow, -1,
+            // Create m_renderer for window
+            m_renderer.m_SDLRenderer = SDL_CreateRenderer(m_renderer.m_SDLWindow, -1,
                                                         SDL_RENDERER_ACCELERATED);
-            if (fRenderer.fSDLRenderer == NULL) {
+            if (m_renderer.m_SDLRenderer == NULL) {
                 printf("Renderer could not be created - SDL Error: %s\n", SDL_GetError());
                 success = false;
             } else {
-                // Initialize fRenderer color to white
-                SDL_SetRenderDrawColor(fRenderer.fSDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                // Initialize m_renderer color to white
+                SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 // Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;
@@ -43,54 +43,13 @@ bool Game::init() {
         }
     }
 
-    fPlayerX = 0.0f;
-    fPlayerY = 0.0f;
-
-    fPlayerXVel = 0.0f;
-    fPlayerYVel = 0.0f;
+    m_player = Entity(20.0f, 20.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
     return success;
 }
 
 void Game::update() {
-    if (fPlayerYVel <= 10.0f) {
-        fPlayerYVel += 0.5f;
-    }
-
-    if (fKeyHandler.isKeyDown(SDLK_UP)) {
-        fPlayerYVel = -7.0f;
-    }
-
-    if (fPlayerXVel < 0) {
-        if (fPlayerXVel < -0.3f) {
-            fPlayerXVel += 0.3f;
-        } else {
-            fPlayerXVel = 0;
-        }
-    } else if (fPlayerXVel > 0) {
-        if (fPlayerXVel > 0.3f) {
-            fPlayerXVel -= 0.3f;
-        } else {
-            fPlayerXVel = 0;
-        }
-    }
-
-
-    if (fKeyHandler.isKeyDown(SDLK_LEFT)) {
-        fPlayerXVel = -3.0f;
-    }
-
-    if (fKeyHandler.isKeyDown(SDLK_RIGHT)) {
-        fPlayerXVel = 3.0f;
-    }
-
-    fPlayerX += fPlayerXVel;
-
-    if (fPlayerY + fPlayerYVel <= 760) {
-        fPlayerY += fPlayerYVel;
-    } else {
-        fPlayerY = 760.0f;
-    }
+    m_player.update(m_keyHandler);
 }
 
 void Game::run() {
@@ -103,10 +62,7 @@ void Game::run() {
     // While application is running
     while(!quit) {
 
-    uint32_t start_tick = SDL_GetTicks();
-
-
-
+        uint32_t start_tick = SDL_GetTicks();
 
         // Handle events on queue
         while (SDL_PollEvent(&e) != 0 ) {
@@ -115,28 +71,29 @@ void Game::run() {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
                 // User presses a key
-                fKeyHandler.pressKey(e.key.keysym.sym);
+                m_keyHandler.pressKey(e.key.keysym.sym);
             } else if (e.type == SDL_KEYUP) {
-                fKeyHandler.liftKey(e.key.keysym.sym);
+                m_keyHandler.liftKey(e.key.keysym.sym);
             }
         }
 
+        if (m_keyHandler.isKeyDown(SDLK_q)) {
+            quit = true;
+        }
         update();
 
         // Clear screen
-        SDL_SetRenderDrawColor(fRenderer.fSDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderClear(fRenderer.fSDLRenderer);
+        SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(m_renderer.m_SDLRenderer);
 
         // Render red filled quad
-        SDL_Rect fillRect = {(int)fPlayerX, (int)fPlayerY, 20, 20};
-        SDL_SetRenderDrawColor(fRenderer.fSDLRenderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderDrawRect(fRenderer.fSDLRenderer, &fillRect);
+        m_player.draw(m_renderer);
 
         // Update screen
-        SDL_RenderPresent(fRenderer.fSDLRenderer);
+        SDL_RenderPresent(m_renderer.m_SDLRenderer);
 
         // Update the surface
-        SDL_UpdateWindowSurface(fRenderer.fSDLWindow);
+        SDL_UpdateWindowSurface(m_renderer.m_SDLWindow);
 
         // usleep(0);
 

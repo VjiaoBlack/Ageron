@@ -10,21 +10,16 @@
 
 #include "Renderer.h"
 #include "KeyHandler.h"
+#include "Entity.h"
 
 #ifndef _GAME_HXX_
 #define _GAME_HXX_
 
 class Game {
 public:
-    Game()
-        : fRenderer(0, 0)
-        , fPlayerX(0)
-        , fPlayerY(0) {}
+    Game(int width, int height) : m_renderer(width, height) {}
 
-    Game(int width, int height)
-        : fRenderer(width, height)
-        , fPlayerX(0)
-        , fPlayerY(0) {}
+    Game() : Game(0, 0) {}
 
     /* Starts up SDL and creates window
      */
@@ -34,18 +29,14 @@ public:
 
     bool loadMedia();
 
-    Renderer fRenderer;
+    Renderer m_renderer;
 
 private:
-    KeyHandler fKeyHandler;
+    KeyHandler m_keyHandler;
 
     void update();
 
-    float fPlayerX;
-    float fPlayerY;
-
-    float fPlayerYVel;
-    float fPlayerXVel;
+    Entity m_player;
 };
 
 #endif

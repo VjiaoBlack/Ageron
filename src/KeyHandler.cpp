@@ -7,14 +7,14 @@
 
 #include "KeyHandler.h"
 
-bool KeyHandler::isKeyDown(int key_code) {
-    return fKeysDown.count(key_code) == 1;
+bool KeyHandler::isKeyDown(int keyCode) {
+    return m_keysDown.count(keyCode) == 1;
 }
 
-void KeyHandler::pressKey(int key_code) {
-    fKeysDown.insert(key_code);
+void KeyHandler::pressKey(int keyCode) {
+    m_keysDown.insert(keyCode);
 }
 
-void KeyHandler::liftKey(int key_code) {
-    fKeysDown.erase(key_code);
+void KeyHandler::liftKey(int keyCode) {
+    m_keysDown.erase(keyCode);
 }

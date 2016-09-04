@@ -29,7 +29,7 @@ int main(int argc, char* args[]) {
     }
 
     // Free resources and close SDL
-    game.fRenderer.close();
+    game.m_renderer.close();
 
     return 0;
 }
