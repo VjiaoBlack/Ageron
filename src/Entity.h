@@ -6,12 +6,13 @@
  */
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_Image.h>
+// #include <SDL2/SDL_Image.h>
 
 #include <math.h>
 
 #include "Renderer.h"
 #include "KeyHandler.h"
+#include "Map.h"
 
 
 #ifndef _ENTITY_H_
@@ -64,6 +65,14 @@ public:
 
     void draw(Renderer& r);
 
+    SDL_Rect getSDLRect() {
+        // TODO: is this how round works?
+        return (SDL_Rect) {(int) round(m_x),
+                           (int) round(m_y),
+                           (int) round(m_w),
+                           (int) round(m_h)};
+    }
+
     void offsetXY(float x, float y);
     void setXY(float x, float y);
     void setX(float x) { m_x = x; }
@@ -73,6 +82,11 @@ public:
     float getY() { return m_y; }
     float getW() { return m_w; }
     float getH() { return m_h; }
+
+    bool contains(int x, int y);
+    bool contains(pair<int, int> coord) {
+        return contains(coord.first, coord.second);
+    }
 
 private:
     float m_x;
