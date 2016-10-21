@@ -16,7 +16,7 @@ void Color::setRGBA(float r, float g, float b, float a) {
 
 void Rect::draw(Renderer& r) {
     // round the width and height or calculate with m_x and m_y round offs?
-    SDL_Rect fillRect = {(int) round(m_x), (int) round(m_y),
+    SDL_Rect fillRect = {(int) round(m_x + r.m_xOffset), (int) round(m_y),
                          (int) round(m_w), (int) round(m_h)};
 
     // TODO Make sure you're not drawing an invisible color!
@@ -32,6 +32,11 @@ void Rect::offsetXY(float x, float y) {
 void Rect::setXY(float x, float y) {
     m_x = x;
     m_y = y;
+}
+
+bool Rect::contains(int x, int y) {
+    return (x >= m_x && x <= (m_x + m_w) &&
+            y >= m_y && y <= (m_y + m_h));
 }
 
 void Entity::draw(Renderer& r) {
@@ -66,18 +71,19 @@ void Entity::update(KeyHandler& keyHandler) {
         }
     }
 
+    // Add an acceleration metric to movement starts too
     if (keyHandler.isKeyDown(SDLK_LEFT)) {
-        m_xVel = -3.0f;
+        m_xVel = -5.0f;
     }
 
     if (keyHandler.isKeyDown(SDLK_RIGHT)) {
-        m_xVel = 3.0f;
+        m_xVel = 5.0f;
     }
 
     m_geometry.offsetXY(m_xVel, m_yVel);
 
-    if (m_geometry.getY() > 760) {
-        m_geometry.setY(760.0f);
+    if (m_geometry.getY() > Map::k_GroundYPos - m_geometry.getH()) {
+        m_geometry.setY(Map::k_GroundYPos - m_geometry.getH());
     }
 }
 

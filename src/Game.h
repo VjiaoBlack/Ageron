@@ -6,14 +6,17 @@
  */
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_Image.h>
+// #include <SDL2/SDL_Image.h>
 
 #include "Renderer.h"
 #include "KeyHandler.h"
 #include "Entity.h"
+#include "Map.h"
 
 #ifndef _GAME_HXX_
 #define _GAME_HXX_
+
+#define K_MAP_FILE_PATH "./res/maps/test_map_1.map"
 
 class Game {
 public:
@@ -33,10 +36,11 @@ public:
 
 private:
     KeyHandler m_keyHandler;
+    Entity m_player;
+    Map m_map;
 
     void update();
 
-    Entity m_player;
 };
 
 #endif
