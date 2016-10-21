@@ -1,5 +1,5 @@
 /*
- *  KeyHandler.h
+ *  KeyHandler.cpp
  *
  *  Victor Jiao (c) 2016
  *
@@ -17,4 +17,17 @@ void KeyHandler::pressKey(int keyCode) {
 
 void KeyHandler::liftKey(int keyCode) {
     m_keysDown.erase(keyCode);
+}
+
+
+bool KeyHandler::isButtonDown(int buttonCode) {
+	return m_buttonsDown.count(buttonCode) == 1;
+}
+
+void KeyHandler::pressButton(int buttonCode) {	
+	m_buttonsDown.insert(buttonCode);
+}
+
+void KeyHandler::liftButton(int buttonCode) {
+	m_buttonsDown.erase(buttonCode);
 }
