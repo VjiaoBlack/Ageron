@@ -150,6 +150,60 @@ src/Ageron.cpp.s:
 	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Ageron.cpp.s
 .PHONY : src/Ageron.cpp.s
 
+src/Building.o: src/Building.cpp.o
+
+.PHONY : src/Building.o
+
+# target to build an object file
+src/Building.cpp.o:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Building.cpp.o
+.PHONY : src/Building.cpp.o
+
+src/Building.i: src/Building.cpp.i
+
+.PHONY : src/Building.i
+
+# target to preprocess a source file
+src/Building.cpp.i:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Building.cpp.i
+.PHONY : src/Building.cpp.i
+
+src/Building.s: src/Building.cpp.s
+
+.PHONY : src/Building.s
+
+# target to generate assembly for a file
+src/Building.cpp.s:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Building.cpp.s
+.PHONY : src/Building.cpp.s
+
+src/Data.o: src/Data.cpp.o
+
+.PHONY : src/Data.o
+
+# target to build an object file
+src/Data.cpp.o:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Data.cpp.o
+.PHONY : src/Data.cpp.o
+
+src/Data.i: src/Data.cpp.i
+
+.PHONY : src/Data.i
+
+# target to preprocess a source file
+src/Data.cpp.i:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Data.cpp.i
+.PHONY : src/Data.cpp.i
+
+src/Data.s: src/Data.cpp.s
+
+.PHONY : src/Data.s
+
+# target to generate assembly for a file
+src/Data.cpp.s:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Data.cpp.s
+.PHONY : src/Data.cpp.s
+
 src/Entity.o: src/Entity.cpp.o
 
 .PHONY : src/Entity.o
@@ -176,6 +230,33 @@ src/Entity.s: src/Entity.cpp.s
 src/Entity.cpp.s:
 	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Entity.cpp.s
 .PHONY : src/Entity.cpp.s
+
+src/Formula.o: src/Formula.cpp.o
+
+.PHONY : src/Formula.o
+
+# target to build an object file
+src/Formula.cpp.o:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Formula.cpp.o
+.PHONY : src/Formula.cpp.o
+
+src/Formula.i: src/Formula.cpp.i
+
+.PHONY : src/Formula.i
+
+# target to preprocess a source file
+src/Formula.cpp.i:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Formula.cpp.i
+.PHONY : src/Formula.cpp.i
+
+src/Formula.s: src/Formula.cpp.s
+
+.PHONY : src/Formula.s
+
+# target to generate assembly for a file
+src/Formula.cpp.s:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Formula.cpp.s
+.PHONY : src/Formula.cpp.s
 
 src/Game.o: src/Game.cpp.o
 
@@ -285,6 +366,33 @@ src/Renderer.cpp.s:
 	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Renderer.cpp.s
 .PHONY : src/Renderer.cpp.s
 
+src/Scenery.o: src/Scenery.cpp.o
+
+.PHONY : src/Scenery.o
+
+# target to build an object file
+src/Scenery.cpp.o:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Scenery.cpp.o
+.PHONY : src/Scenery.cpp.o
+
+src/Scenery.i: src/Scenery.cpp.i
+
+.PHONY : src/Scenery.i
+
+# target to preprocess a source file
+src/Scenery.cpp.i:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Scenery.cpp.i
+.PHONY : src/Scenery.cpp.i
+
+src/Scenery.s: src/Scenery.cpp.s
+
+.PHONY : src/Scenery.s
+
+# target to generate assembly for a file
+src/Scenery.cpp.s:
+	$(MAKE) -f CMakeFiles/Ageron.dir/build.make CMakeFiles/Ageron.dir/src/Scenery.cpp.s
+.PHONY : src/Scenery.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -297,9 +405,18 @@ help:
 	@echo "... src/Ageron.o"
 	@echo "... src/Ageron.i"
 	@echo "... src/Ageron.s"
+	@echo "... src/Building.o"
+	@echo "... src/Building.i"
+	@echo "... src/Building.s"
+	@echo "... src/Data.o"
+	@echo "... src/Data.i"
+	@echo "... src/Data.s"
 	@echo "... src/Entity.o"
 	@echo "... src/Entity.i"
 	@echo "... src/Entity.s"
+	@echo "... src/Formula.o"
+	@echo "... src/Formula.i"
+	@echo "... src/Formula.s"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
@@ -312,6 +429,9 @@ help:
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"
+	@echo "... src/Scenery.o"
+	@echo "... src/Scenery.i"
+	@echo "... src/Scenery.s"
 .PHONY : help
 
 

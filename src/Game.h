@@ -20,7 +20,7 @@
 
 class Game {
 public:
-    Game(int width, int height) : m_renderer(width, height) {}
+    Game(int width, int height) : renderer(width, height) {}
 
     Game() : Game(0, 0) {}
 
@@ -32,12 +32,12 @@ public:
 
     bool loadMedia();
 
-    Renderer m_renderer;
+    Renderer renderer;
 
 private:
-    KeyHandler m_keyHandler;
-    Entity m_player;
-    Map m_map;
+    KeyHandler keyHandler;
+    Entity player;
+    Map map;
 
     void update();
 

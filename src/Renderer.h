@@ -17,21 +17,21 @@
 class Renderer {
 public:
     Renderer(int width, int height)
-        : m_SDLWindow(NULL)
-        , m_SDLRenderer(NULL)
-        , m_width(width)
-        , m_height(height)
-        , m_xOffset(0) {}
+        : SDLWindow(NULL)
+        , SDLRenderer(NULL)
+        , width(width)
+        , height(height)
+        , xOffset(0) {}
 
     Renderer() : Renderer(0, 0) {}
 
-    int m_width;
-    int m_height;
+    int width;
+    int height;
 
-    double m_xOffset;
+    double xOffset;
 
-    SDL_Renderer* m_SDLRenderer;
-    SDL_Window* m_SDLWindow;
+    SDL_Renderer* SDLRenderer;
+    SDL_Window* SDLWindow;
 
     /* Frees media and shuts down SDL
      */

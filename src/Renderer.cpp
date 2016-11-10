@@ -9,8 +9,8 @@
 
 void Renderer::close() {
     // Destroy window
-    SDL_DestroyWindow(m_SDLWindow);
-    m_SDLWindow = NULL;
+    SDL_DestroyWindow(SDLWindow);
+    SDLWindow = NULL;
 
     // TODO: Destroy fRenderer?
 

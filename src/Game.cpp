@@ -15,22 +15,22 @@ bool Game::init() {
         success = false;
     } else {
         // Create window
-        m_renderer.m_SDLWindow = SDL_CreateWindow("Ageron",
+        renderer.SDLWindow = SDL_CreateWindow("Ageron",
                                    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   m_renderer.m_width, m_renderer.m_height, SDL_WINDOW_SHOWN);
-        if (m_renderer.m_SDLWindow == NULL) {
+                                   renderer.width, renderer.height, SDL_WINDOW_SHOWN);
+        if (renderer.SDLWindow == NULL) {
             printf("Window could not be created - SDL Error: %s\n", SDL_GetError());
             success = false;
         } else {
-            // Create m_renderer for window
-            m_renderer.m_SDLRenderer = SDL_CreateRenderer(m_renderer.m_SDLWindow, -1,
+            // Create renderer for window
+            renderer.SDLRenderer = SDL_CreateRenderer(renderer.SDLWindow, -1,
                                                         SDL_RENDERER_ACCELERATED);
-            if (m_renderer.m_SDLRenderer == NULL) {
+            if (renderer.SDLRenderer == NULL) {
                 printf("Renderer could not be created - SDL Error: %s\n", SDL_GetError());
                 success = false;
             } else {
-                // Initialize m_renderer color to white
-                SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                // Initialize renderer color to white
+                SDL_SetRenderDrawColor(renderer.SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 // Initialize PNG loading
                 // int imgFlags = IMG_INIT_PNG;
@@ -43,21 +43,21 @@ bool Game::init() {
         }
     }
 
-    m_player = Entity(32.0f, 64.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
-    m_player.setXY(400, 400);
+    player = Entity(32.0f, 64.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
+    player.setXY(400, 400);
 
-    m_map.load(K_MAP_FILE_PATH);
+    map.load(K_MAP_FILE_PATH);
 
     return success;
 }
 
 void Game::update() {
-    m_player.update(m_keyHandler);
+    player.update(keyHandler);
 
-    if (m_renderer.m_xOffset + m_player.getX() < 200) {
-        m_renderer.m_xOffset += 5;
-    } else if (m_renderer.m_xOffset + m_player.getX() > 900) {
-        m_renderer.m_xOffset -= 5;
+    if (renderer.xOffset + player.getX() < 200) {
+        renderer.xOffset += 5;
+    } else if (renderer.xOffset + player.getX() > 900) {
+        renderer.xOffset -= 5;
     }
 }
 
@@ -85,55 +85,55 @@ void Game::run() {
                 menu = false;
             } else if (e.type == SDL_KEYDOWN) {
                 // user presses a key
-                m_keyHandler.pressKey(e.key.keysym.sym);
+                keyHandler.pressKey(e.key.keysym.sym);
             } else if (e.type == SDL_KEYUP) {
-                m_keyHandler.liftKey(e.key.keysym.sym);
+                keyHandler.liftKey(e.key.keysym.sym);
             } else if (e.type == SDL_MOUSEBUTTONDOWN) {
                 // TODO: can we even store this in keyhandler?
-                m_keyHandler.pressButton(e.button.button);
+                keyHandler.pressButton(e.button.button);
             } else if (e.type == SDL_MOUSEBUTTONUP) {
-                m_keyHandler.liftButton(e.button.button);
+                keyHandler.liftButton(e.button.button);
             } else if (e.type == SDL_MOUSEMOTION) {
-                m_keyHandler.m_mouseX = e.motion.x;
-                m_keyHandler.m_mouseY = e.motion.y;
-                m_keyHandler.m_mouseXVel = e.motion.xrel;
-                m_keyHandler.m_mouseYVel = e.motion.yrel;
+                keyHandler.mouseX = e.motion.x;
+                keyHandler.mouseY = e.motion.y;
+                keyHandler.mouseXVel = e.motion.xrel;
+                keyHandler.mouseYVel = e.motion.yrel;
             }
         }
 
         // update() block for keypresses
-        if (m_keyHandler.isKeyDown(SDLK_q)) {
+        if (keyHandler.isKeyDown(SDLK_q)) {
             quit = true;
             menu = false;
         }
 
-        if (m_keyHandler.isButtonDown(SDL_BUTTON_LEFT)) {
-            if (startGame.contains(m_keyHandler.m_mouseX,
-                                   m_keyHandler.m_mouseY)) {
+        if (keyHandler.isButtonDown(SDL_BUTTON_LEFT)) {
+            if (startGame.contains(keyHandler.mouseX,
+                                   keyHandler.mouseY)) {
                 menu = false;
             }
         }
 
 
         // Clear screen
-        SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderClear(m_renderer.m_SDLRenderer);
+        SDL_SetRenderDrawColor(renderer.SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer.SDLRenderer);
 
 
-        SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer,
+        SDL_SetRenderDrawColor(renderer.SDLRenderer,
                                0xFF, 0x00, 0xFF, 0xFF);
 
 
-        // round the width and height or calculate with m_x and m_y round offs?
+        // round the width and height or calculate with x and y round offs?
         SDL_Rect fillRect = startGame.getSDLRect();
 
-        SDL_RenderDrawRect(m_renderer.m_SDLRenderer, &fillRect);
+        SDL_RenderDrawRect(renderer.SDLRenderer, &fillRect);
 
         // Update screen
-        SDL_RenderPresent(m_renderer.m_SDLRenderer);
+        SDL_RenderPresent(renderer.SDLRenderer);
 
         // Update the surface
-        SDL_UpdateWindowSurface(m_renderer.m_SDLWindow);
+        SDL_UpdateWindowSurface(renderer.SDLWindow);
 
         // usleep(0);
 
@@ -163,32 +163,32 @@ void Game::run() {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
                 // User presses a key
-                m_keyHandler.pressKey(e.key.keysym.sym);
+                keyHandler.pressKey(e.key.keysym.sym);
             } else if (e.type == SDL_KEYUP) {
-                m_keyHandler.liftKey(e.key.keysym.sym);
+                keyHandler.liftKey(e.key.keysym.sym);
             }
         }
 
-        if (m_keyHandler.isKeyDown(SDLK_q)) {
+        if (keyHandler.isKeyDown(SDLK_q)) {
             quit = true;
         }
         update();
 
         // Clear screen
-        SDL_SetRenderDrawColor(m_renderer.m_SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderClear(m_renderer.m_SDLRenderer);
+        SDL_SetRenderDrawColor(renderer.SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer.SDLRenderer);
 
         // Render red filled quad
-        m_player.draw(m_renderer);
+        player.draw(renderer);
 
         // render map
-        m_map.draw(m_renderer);
+        map.draw(renderer);
 
         // Update screen
-        SDL_RenderPresent(m_renderer.m_SDLRenderer);
+        SDL_RenderPresent(renderer.SDLRenderer);
 
         // Update the surface
-        SDL_UpdateWindowSurface(m_renderer.m_SDLWindow);
+        SDL_UpdateWindowSurface(renderer.SDLWindow);
 
         // usleep(0);
 
