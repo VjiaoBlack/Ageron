@@ -1,8 +1,7 @@
-/*
- *  KeyHandler.cpp
+/**
+ * KeyHandler.cpp
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include "KeyHandler.h"

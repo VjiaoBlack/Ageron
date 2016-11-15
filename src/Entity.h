@@ -5,19 +5,22 @@
  *
  */
 
-#include <SDL2/SDL.h>
-// #include <SDL2/SDL_Image.h>
-
-#include <math.h>
-
-#include "Renderer.h"
-#include "KeyHandler.h"
-#include "Map.h"
-
-
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
+#include <SDL2/SDL.h>
+
+#include <math.h>
+
+#include "KeyHandler.h"
+#include "Map.h"
+#include "Renderer.h"
+
+/**
+ * Color
+ *
+ * keeps track of (and works with) colors
+ */
 class Color {
 public:
     Color(float r, float g, float b, float a)
@@ -54,6 +57,11 @@ private:
     float a;
 };
 
+/**
+ * Rect
+ *
+ * A rectangle class that has basic functionalities for movement and stuff
+ */
 class Rect {
 public:
     Rect(float x, float y, float w, float h)
@@ -65,8 +73,9 @@ public:
 
     void draw(Renderer& r);
 
+    
     SDL_Rect getSDLRect() {
-        // TODO: is this how round works?
+        /** TODO: is this how round works? */
         return (SDL_Rect) {(int) round(x),
                            (int) round(y),
                            (int) round(w),
@@ -96,6 +105,11 @@ private:
 
 };
 
+/**
+ * Entity
+ *
+ * free-moving objects in the world
+ */
 class Entity {
 public:
     Entity(int w, int h, Color c)
@@ -111,10 +125,10 @@ public:
 
     void update(KeyHandler& keyHandler);
 
-    void setX(float x) { geometry.setX(x); }
-    float getX() { return geometry.getX(); }
-    void setY(float y) { geometry.setY(y); }
-    float getY() { return geometry.getY(); }
+    void  setX(float x) { geometry.setX(x); }
+    float getX()        { return geometry.getX(); }
+    void  setY(float y) { geometry.setY(y); }
+    float getY()        { return geometry.getY(); }
 
     void setXY(float x, float y);
 

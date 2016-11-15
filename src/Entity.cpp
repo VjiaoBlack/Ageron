@@ -1,8 +1,7 @@
-/*
- *  Entity.cpp
+/**
+ * Entity.cpp
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include "Entity.h"
@@ -14,12 +13,11 @@ void Color::setRGBA(float r, float g, float b, float a) {
     this->a = a;
 }
 
-void Rect::draw(Renderer& r) {
-    // round the width and height or calculate with x and y round offs?
-    SDL_Rect fillRect = {(int) round(x + r.xOffset), (int) round(y),
-                         (int) round(w), (int) round(h)};
 
-    // TODO Make sure you're not drawing an invisible color!
+
+void Rect::draw(Renderer& r) {
+    SDL_Rect fillRect = {(int) r.displayX(round(x)), (int) round(y),
+                         (int) round(w), (int) round(h)};
 
     SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
 }
@@ -44,15 +42,16 @@ void Entity::draw(Renderer& r) {
                                           color.get8G(),
                                           color.get8B(),
                                           color.get8A());
-
     geometry.draw(r);
 }
 
 void Entity::update(KeyHandler& keyHandler) {
+    /** maximum down y velocity */
     if (yVel <= 10.0f) {
         yVel += 0.5f;
     }
 
+    /** smooth sliding (to stop) */
     if (xVel < 0) {
         if (xVel < -0.3f) {
             xVel += 0.3f;
@@ -67,7 +66,7 @@ void Entity::update(KeyHandler& keyHandler) {
         }
     }
 
-    // Add an acceleration metric to movement starts too
+    /** TODO: Add acceleration metric to start */
     if (keyHandler.isKeyDown(SDLK_LEFT)) {
         xVel = -5.0f;
     }
@@ -76,6 +75,7 @@ void Entity::update(KeyHandler& keyHandler) {
         xVel = 5.0f;
     }
 
+    /** moves the geometry */
     geometry.offsetXY(xVel, yVel);
 
     if (geometry.getY() > Map::kGroundYPos - geometry.getH()) {

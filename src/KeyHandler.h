@@ -1,8 +1,7 @@
-/*
- *  KeyHandler.h
+/**
+ * KeyHandler.h
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include <unordered_set>
@@ -10,6 +9,11 @@
 #ifndef _KEY_HANDLER_H_
 #define _KEY_HANDLER_H_
 
+/**
+ * KeyHandler
+ *
+ * This handles all interactions between the SDL Keyboard, Mouse, and the user.
+ */
 class KeyHandler {
 public:
     KeyHandler()

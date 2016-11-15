@@ -1,8 +1,7 @@
-/*
- *  Map.cpp
+/**
+ * Map.cpp
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include "Map.h"
@@ -14,37 +13,57 @@ Tile::Tile(int vegetationLevel, TileType type)
 		  type(type) { }
 
 void Tile::draw(Renderer& r, double x) {
-    // round the width and height or calculate with x and y round offs?
+    /** TODO: round the width and height or calculate with x and y round offs? */
 	SDL_Rect fillRect = {(int) round(x), Map::kGroundYPos,
 	                     kTileWidth, kTileHeight};
 
-	switch(type) {
-		case kDirt:
-		    SDL_SetRenderDrawColor(r.SDLRenderer, 0xBB, 0x77, 0x22, 0xFF);
-			break;
-		case kStone:
-		    SDL_SetRenderDrawColor(r.SDLRenderer, 0x88, 0x88, 0x88, 0xFF);
-			break;
-		case 2:
-		    SDL_SetRenderDrawColor(r.SDLRenderer, 0xCC, 0xCC, 0x00, 0xFF);
-			break;
-		case kWater:
-		    SDL_SetRenderDrawColor(r.SDLRenderer, 0x00, 0x00, 0xCC, 0xFF);
-			break;
-	}
+	/** catch case just in case there's no tileset */
+	if (Tile::tileset[this->type] == NULL) {
+		switch(type) {
+			case kDirt:
+			    SDL_SetRenderDrawColor(r.SDLRenderer, 0xBB, 0x77, 0x22, 0xFF);
+				break;
+			case kStone:
+			    SDL_SetRenderDrawColor(r.SDLRenderer, 0x88, 0x88, 0x88, 0xFF);
+				break;
+			case 2:
+			    SDL_SetRenderDrawColor(r.SDLRenderer, 0xCC, 0xCC, 0x00, 0xFF);
+				break;
+			case kWater:
+			    SDL_SetRenderDrawColor(r.SDLRenderer, 0x00, 0x00, 0xCC, 0xFF);
+				break;
+		}
 
-	SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
+		SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
+	} else {
+		SDL_RenderCopy(r.SDLRenderer, tileset[this->type], NULL, &fillRect);
+	}
 }
 
-bool Map::load(string filename) {
-	// init attributes
+vector <SDL_Texture*> Tile::tileset;
 
-	initBuildingAttrs(buildingAttr);
-	initSceneryAttrs(sceneryAttr);
-	initJobAttrs(jobAttr);
-	initMaterialAttrs(materialAttr);
-	initFoodAttrs(foodAttr);
-	initToolAttrs(toolAttr);
+void Tile::init(Renderer& r) {
+	Tile::tileset.resize(Tile::TileType::kNumTypes);
+	for (int i = 0; i < Tile::TileType::kNumTypes; i++) {
+		Tile::tileset[i] = NULL;
+	}
+
+	Tile::tileset[Tile::TileType::kDirt]  = r.loadSurface("res/tileset/dirt.png");
+	Tile::tileset[Tile::TileType::kStone] = r.loadSurface("res/tileset/gravel.png");
+	Tile::tileset[Tile::TileType::kSand]  = r.loadSurface("res/tileset/sand.png");
+	Tile::tileset[Tile::TileType::kWater] = r.loadSurface("res/tileset/water.png");
+}
+
+bool Map::load(Renderer& r, string filename) {
+	initBuildingAttrs(r, buildingAttr);
+	initSceneryAttrs(r, sceneryAttr);
+	initJobAttrs(r, jobAttr);
+	initMaterialAttrs(r, materialAttr);
+	initFoodAttrs(r, foodAttr);
+	initToolAttrs(r, toolAttr);
+
+	Tile::init(r);
+
 
 	ifstream mapFile;
 	mapFile.open(filename);
@@ -56,8 +75,6 @@ bool Map::load(string filename) {
 
 	printf("Loading Map... size: %d\n", width);
 
-	// get rid of new line char
-	// mapFile >> c;
 	for (int i = 0; i < width; i++) {
 		mapFile >> d >> c;
 
@@ -65,7 +82,7 @@ bool Map::load(string filename) {
 		tiles.push_back(tile);
 	}
 
-	// // read scenery
+	/** read scenery */
 	string s;
 	int n;
 	mapFile >> s >> n;
@@ -78,7 +95,7 @@ bool Map::load(string filename) {
 		scenery.push_back(new Scenery(sceneryAttr[name], xpos * 32));
 	}
 
-	// read buildings
+	/** read buildings */
 	mapFile >> s >> n;
 	cout << s << " " << n << endl;
 	while (n--) {
@@ -89,7 +106,7 @@ bool Map::load(string filename) {
 		buildings.push_back(new Building(buildingAttr[name], xpos * 32));
 	}
 
-	// read units
+	/** read units */
 	mapFile >> s >> n;
 	while (n--) {
 		string name;
@@ -98,53 +115,22 @@ bool Map::load(string filename) {
 
 	printf("Done, read %lu tiles\n", tiles.size());
 
-	// TODO: actually do a meaningful valid map check
+	/** TODO: actually do a meaningful valid map check */
 	return true;
 }
 
 void Map::draw(Renderer& r) {
-	// // draw all the tiles
-	// for (int i = 0; i < tiles.size(); i++) {
-	// 	tiles[i].draw(r, r.xOffset + i * Tile::kTileWidth);
-	// }
-
-	// draw all the tiles that are visible 
-	int offset = r.xOffset;
-
-	offset = ((int) r.xOffset % (Tile::kTileWidth * tiles.size()));
-	
-	int x = offset;
-	int i = 0;
-
-	while(x < 0 - Tile::kTileWidth) {
-		x += Tile::kTileWidth;
-		i++;
+	/** draw all the tiles */
+	for (int i = 0; i < tiles.size(); i++) {
+		tiles[i].draw(r, r.displayX(i * Tile::kTileWidth));
 	}
 
-	while (x < K_WINDOW_WIDTH) {
-		tiles[i].draw(r, x);
-
-		x += Tile::kTileWidth;
-		i++;
-	}
-
-	x = offset - Tile::kTileWidth;
-	i = tiles.size() - 1;
-
-	while (x >= 0 - Tile::kTileWidth) {
-		tiles[i].draw(r, x);
-
-		x -= Tile::kTileWidth;
-		i--;
-	}
-
-
-	// draw buildings and stuff at offset
-	for (i = 0; i < buildings.size(); i++) {
+	/** draw buildings and stuff at offset */
+	for (int i = 0; i < buildings.size(); i++) {
 		buildings[i]->draw(r);
 	}	
 
-	for (i = 0; i < scenery.size(); i++) {
+	for (int i = 0; i < scenery.size(); i++) {
 		scenery[i]->draw(r);
 	}
 

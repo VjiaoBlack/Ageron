@@ -1,33 +1,47 @@
-/*
- *  Data.h
+/**
+ * Data.h
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
-
-#include <vector>
-#include <map>
-#include <string>
 
 #ifndef _DATA_HXX_
 #define _DATA_HXX_
 
-// AHLH: Average Human Labor Hours
+#include <map>
+#include <string>
+#include <vector>
+
+#include "Renderer.h"
+
+
 
 using namespace std;
 
+/**
+ * DataAttr
+ *
+ * The parent class for object-attribute storage classes
+ */
 class DataAttr {
 public:
 	string name;
 };
 
+/**
+ * BuildingAttr
+ *
+ * Stores attributes of all building types
+ *
+ * @param area   measures space inside building
+ */
 class BuildingAttr : DataAttr {
 public:
-	string name;
+	string name;	
 	int width;
-	int height;
-	int area;
-	int AHLH;
+	int height;		
+	int area;		
+	int AHLH;		// Average Human Labor Hours
+	SDL_Texture* texture = NULL;
 
 	BuildingAttr(string name, int width, int height, 
 				 int area, int AHLH)
@@ -38,11 +52,27 @@ public:
 		, AHLH(AHLH) {}
 	BuildingAttr() : BuildingAttr("", 0, 0, 0, 0) {}
 
+	/** the list of building materials */
 	vector<pair<string, int>> materials;
 };
 
-void initBuildingAttrs(map<string, BuildingAttr*> &attrs);
+/**
+ * initBuildingAttrs
+ * 
+ * Initializes data for all buildings
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initBuildingAttrs(Renderer& r, map<string, BuildingAttr*> &attrs);
 
+/**
+ * SceneryAttr
+ *
+ * Stores all of the scenery item attributes
+ *
+ * @param resources	  the resources stored in this scenery
+ */
 class SceneryAttr : DataAttr {
 public:
 	string name;
@@ -50,6 +80,7 @@ public:
 	int height;
 	vector<pair<string, int> > resources; 
 	int AHLH;
+	SDL_Texture* texture = NULL;
 
 	SceneryAttr(string n, int w, int h, int lh) 
 		: name(n)
@@ -62,8 +93,21 @@ public:
 	}
 };
 
-void initSceneryAttrs(map<string, SceneryAttr*> &attrs);
+/**
+ * initScenery
+ * 
+ * Initializes data for all scenery items
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initSceneryAttrs(Renderer& r, map<string, SceneryAttr*> &attrs);
 
+/**
+ * JobAttr
+ *
+ * Stores attributes and effects of different jobs
+ */
 class JobAttr : DataAttr {
 public:
 	string name;
@@ -76,8 +120,21 @@ public:
 	JobAttr() : JobAttr("", 0) {}
 };
 
-void initJobAttrs(map<string, JobAttr*> &attrs);
+/**
+ * initJobAttrs
+ * 
+ * Initializes data for all job types
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initJobAttrs(Renderer& r, map<string, JobAttr*> &attrs);
 
+/**
+ * MaterialAttr
+ *
+ * Stores attributes of materials
+ */
 class MaterialAttr : DataAttr {
 public:
 	string name;
@@ -89,8 +146,21 @@ public:
 	MaterialAttr() : MaterialAttr("", 0) {}
 };
 
-void initMaterialAttrs(map<string, MaterialAttr*> &attrs);
+/**
+ * initMaterialAttrs
+ * 
+ * Initializes data for all materials
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initMaterialAttrs(Renderer& r, map<string, MaterialAttr*> &attrs);
 
+/**
+ * FoodAttr
+ *
+ * stores attributes about food
+ */
 class FoodAttr : DataAttr {
 public:
 	string name;
@@ -103,8 +173,21 @@ public:
 	FoodAttr() : FoodAttr("", 0) {}
 };
 
-void initFoodAttrs(map<string, FoodAttr*> &attrs);
+/**
+ * initFoodAttrs
+ * 
+ * Initializes data for all food items
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initFoodAttrs(Renderer& r, map<string, FoodAttr*> &attrs);
 
+/**
+ * ToolAttr
+ *
+ * stores attributes about tools
+ */
 class ToolAttr : DataAttr {
 public:
 	string name;
@@ -117,6 +200,14 @@ public:
 	ToolAttr() : ToolAttr("", 0) {}
 };
 
-void initToolAttrs(map<string, ToolAttr*> &attrs);
+/**
+ * initToolAttrs
+ * 
+ * Initializes data for all tools
+ * 
+ * @param r     The current renderer in use by Game
+ * @param attrs The Game's map that will store the data
+ */
+void initToolAttrs(Renderer& r, map<string, ToolAttr*> &attrs);
 
 #endif

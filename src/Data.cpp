@@ -1,17 +1,14 @@
-/*
- *  Data.cpp
+/**
+ * Data.cpp
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include "Data.h"
 
 using namespace std;
 
-// AHLH: Average Human Labor Hours
-
-void initBuildingAttrs(map<string, BuildingAttr*> &attrs) {
+void initBuildingAttrs(Renderer& r, map<string, BuildingAttr*> &attrs) {
 	BuildingAttr* tent = new BuildingAttr("tent", 2, 3, 3, 2);
 	tent->materials.push_back(make_pair("wood", 2));
 	tent->materials.push_back(make_pair("leather", 3));
@@ -28,17 +25,21 @@ void initBuildingAttrs(map<string, BuildingAttr*> &attrs) {
 	attrs["hut"] = hut;
 }
 
-void initSceneryAttrs(map<string, SceneryAttr*> &attrs) {
+void initSceneryAttrs(Renderer& r, map<string, SceneryAttr*> &attrs) {
 	SceneryAttr* tree = new SceneryAttr("tree", 5, 8, 3);
 	tree->addResource("wood", 10);
+	tree->texture = r.loadSurface("res/tileset/tree.png");
 
 	SceneryAttr* berry_bush = new SceneryAttr("berry_bush", 2, 2, 1);
 	berry_bush->addResource("berry", 10);
+	berry_bush->texture = r.loadSurface("res/tileset/berry_bush.png");
 
 	SceneryAttr* dead_tree = new SceneryAttr("dead_tree", 4, 7, 2);
 	dead_tree->addResource("wood", 2);
+	dead_tree->texture = r.loadSurface("res/tileset/dead_tree.png");
 
 	SceneryAttr* flower = new SceneryAttr("flower", 1, 2, 0);
+	flower->texture = r.loadSurface("res/tileset/flower.png");
 
 	attrs["tree"] = tree;
 	attrs["berry_bush"] = berry_bush;
@@ -46,7 +47,7 @@ void initSceneryAttrs(map<string, SceneryAttr*> &attrs) {
 	attrs["flower"] = flower;
 }
 
-void initJobAttrs(map<string, JobAttr*> &attrs) {
+void initJobAttrs(Renderer& r, map<string, JobAttr*> &attrs) {
 	JobAttr* gatherer = new JobAttr("gatherer", 6);
 	gatherer->bonuses.push_back(make_pair("foraging", 2.0));
 	gatherer->bonuses.push_back(make_pair("scavenging", 3.0));
@@ -74,7 +75,7 @@ void initJobAttrs(map<string, JobAttr*> &attrs) {
 	attrs["woodcutter"] = woodcutter;
 }
 
-void initMaterialAttrs(map<string, MaterialAttr*> &attrs) {
+void initMaterialAttrs(Renderer& r, map<string, MaterialAttr*> &attrs) {
 	MaterialAttr* hay = new MaterialAttr("hay", .5);
 	MaterialAttr* wood = new MaterialAttr("wood", 1);
 	MaterialAttr* stone = new MaterialAttr("stone", .5);
@@ -100,7 +101,7 @@ void initMaterialAttrs(map<string, MaterialAttr*> &attrs) {
 	attrs["leather"] = leather;
 }
 
-void initFoodAttrs(map<string, FoodAttr*> &attrs) {
+void initFoodAttrs(Renderer& r, map<string, FoodAttr*> &attrs) {
 	FoodAttr* meat = new FoodAttr("meat", 8);
 	FoodAttr* cooked_meat = new FoodAttr("cooked_meat", 15);
 	FoodAttr* berries = new FoodAttr("berries", 3);
@@ -115,7 +116,7 @@ void initFoodAttrs(map<string, FoodAttr*> &attrs) {
 
 }
 
-void initToolAttrs(map<string, ToolAttr*> &attrs) {
+void initToolAttrs(Renderer& r, map<string, ToolAttr*> &attrs) {
 	ToolAttr* pot = new ToolAttr("pot", 40);
 	ToolAttr* spear = new ToolAttr("spear", 50);
 	ToolAttr* axe = new ToolAttr("axe", 30);

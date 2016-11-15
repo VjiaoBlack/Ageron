@@ -1,12 +1,10 @@
-/*
- *  Ageron.cpp
+/**
+ * Ageron.cpp
  *
- *  Victor Jiao (c) 2016
- *
+ * Victor Jiao (c) 2016
  */
 
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL_Image.h>
 
 #include <stdio.h>
 #include <string>
