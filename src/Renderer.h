@@ -13,8 +13,12 @@ class Renderer;
 
 #include "Map.h"
 
-#define K_WINDOW_WIDTH 1280
-#define K_WINDOW_HEIGHT 780
+#define K_SCREEN_SCALE 2
+
+#define K_WINDOW_WIDTH (1280 * K_SCREEN_SCALE)
+#define K_WINDOW_HEIGHT (780 * K_SCREEN_SCALE)
+
+#define K_TILE_SIZE (32 * K_SCREEN_SCALE)
 
 class Renderer {
 public:

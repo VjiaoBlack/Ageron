@@ -106,20 +106,21 @@ private:
 };
 
 /**
- * Entity
+ * Player
  *
  * free-moving objects in the world
  */
-class Entity {
+class Player {
 public:
-    Entity(int w, int h, Color c)
+    Player(int w, int h, Color c)
         : geometry(w, h)
         , xVel(0), yVel(0)
-        , color(c) {}
+        , color(c)
+        , lastAction(0) {}
 
-    Entity(int w, int h) : Entity(w, h, Color(0, 0, 0, 0)) {}
+    Player(int w, int h) : Player(w, h, Color(0, 0, 0, 0)) {}
 
-    Entity() : Entity(0, 0, Color(0, 0, 0, 1.0f)) {}
+    Player() : Player(0, 0, Color(0, 0, 0, 1.0f)) {}
 
     void draw(Renderer& r);
 
@@ -130,13 +131,19 @@ public:
     void  setY(float y) { geometry.setY(y); }
     float getY()        { return geometry.getY(); }
 
+    int   getW()        { return geometry.getW(); }
+
     void setXY(float x, float y);
 
     void setXYVel(float xv, float yv);
 
+    uint32_t lastAction;
+
 private:
     Rect geometry;
     Color color;
+
+    float xAcc;
 
     float xVel;
     float yVel;

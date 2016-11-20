@@ -13,8 +13,6 @@ void Color::setRGBA(float r, float g, float b, float a) {
     this->a = a;
 }
 
-
-
 void Rect::draw(Renderer& r) {
     SDL_Rect fillRect = {(int) r.displayX(round(x)), (int) round(y),
                          (int) round(w), (int) round(h)};
@@ -37,7 +35,7 @@ bool Rect::contains(int x, int y) {
             y >= this->y && y <= (this->y + h));
 }
 
-void Entity::draw(Renderer& r) {
+void Player::draw(Renderer& r) {
     SDL_SetRenderDrawColor(r.SDLRenderer, color.get8R(),
                                           color.get8G(),
                                           color.get8B(),
@@ -45,49 +43,51 @@ void Entity::draw(Renderer& r) {
     geometry.draw(r);
 }
 
-void Entity::update(KeyHandler& keyHandler) {
+void Player::update(KeyHandler& keyHandler) {
     /** maximum down y velocity */
     if (yVel <= 10.0f) {
         yVel += 0.5f;
     }
 
-    /** smooth sliding (to stop) */
-    if (xVel < 0) {
-        if (xVel < -0.3f) {
-            xVel += 0.3f;
-        } else {
-            xVel = 0;
-        }
-    } else if (xVel > 0) {
-        if (xVel > 0.3f) {
-            xVel -= 0.3f;
-        } else {
-            xVel = 0;
-        }
-    }
-
-    /** TODO: Add acceleration metric to start */
+    /** Acceleration */
     if (keyHandler.isKeyDown(SDLK_LEFT)) {
-        xVel = -5.0f;
-    }
-
-    if (keyHandler.isKeyDown(SDLK_RIGHT)) {
-        xVel = 5.0f;
+        if (xVel >= -4.0f * K_SCREEN_SCALE) {
+            xVel -= 0.4f * K_SCREEN_SCALE;
+        } 
+        /** slow down faster if trying to switch directoin */
+        if (xVel >= 0.0f) {
+            xVel -= 0.4f * K_SCREEN_SCALE;
+        }
+    } else if (keyHandler.isKeyDown(SDLK_RIGHT)) {
+        if (xVel <= 4.0f * K_SCREEN_SCALE) {
+            xVel += 0.4f * K_SCREEN_SCALE;
+        }
+        if (xVel <= 0.0f) {
+            xVel += 0.4f * K_SCREEN_SCALE;
+        }
+    } else {
+        if (xVel > 0.4f * K_SCREEN_SCALE) {
+            xVel -= 0.4f * K_SCREEN_SCALE;
+        } else if (xVel < -0.4f * K_SCREEN_SCALE) {
+            xVel += 0.4f * K_SCREEN_SCALE;
+        } else {
+            xVel = 0.0f;
+        }
     }
 
     /** moves the geometry */
     geometry.offsetXY(xVel, yVel);
 
-    if (geometry.getY() > Map::kGroundYPos - geometry.getH()) {
-        geometry.setY(Map::kGroundYPos - geometry.getH());
+    if (geometry.getY() > K_MAP_HEIGHT - geometry.getH()) {
+        geometry.setY(K_MAP_HEIGHT - geometry.getH());
     }
 }
 
-void Entity::setXY(float x, float y) {
+void Player::setXY(float x, float y) {
     geometry.setXY(x, y);
 }
 
-void Entity::setXYVel(float xv, float yv) {
+void Player::setXYVel(float xv, float yv) {
     xVel = xv;
     yVel = yv;
 }

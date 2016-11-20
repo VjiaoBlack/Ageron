@@ -5,82 +5,26 @@
  *
  */
 
-#include <algorithm>
-#include <map>
-#include <string>
-#include <vector>
-
-#include "Data.h"
+#include "Formula.h"
 
 using namespace std;
 
-/**
- * Formula
- *
- * Each formula is a relationship between different materials
- * I.e. you can use wood to make poles
- */
-class Formula {
-public:
-	string target;
-	int amt;
-	vector<string> tools;
-	vector<pair<string, int> > recipe;
+void Formula::addIngredient(string d, int c) {
+	for (auto it = recipe.begin(); it != recipe.end(); it++) {
+		if (it->first == d) {
+			it->second += c;
 
-	int AHLH; // Average Human Labor Hours
-
-	Formula(string t, int c, string tl, int ahlh)
-		: target(t)
-		, amt(c)
-		, AHLH(ahlh) {
-		if (tl.size() > 0) {
-			tools.push_back(tl);
+			return;
 		}
 	}
 
-	Formula(string t, int c, int ahlh) : Formula(t, c, "", ahlh) {}
-	Formula(string t, int c) : Formula(t, c, "", 0) {}
-	Formula(string t) : Formula(t, 1, "", 0) {}
+	recipe.push_back(make_pair(d, c));
+}
 
-	/**
-	 * addIngredient
-	 *
-	 * adds an ingredient to the ingredient list
-	 * 
-	 * @param d ingredient name
-	 * @param c ingredient amount
-	 */
-	void addIngredient(string d, int c) {
-		for (auto it = recipe.begin(); it != recipe.end(); it++) {
-			if (it->first == d) {
-				it->second += c;
+void Formula::addTool(string tl) {
+	tools.push_back(tl);
+}
 
-				return;
-			}
-		}
-
-		recipe.push_back(make_pair(d, c));
-	}
-
-	/**
-	 * addTool
-	 *
-	 * adds a tool to the required / optional tool list
-	 * 
-	 * @param tl tool name
-	 */
-	void addTool(string tl) {
-		tools.push_back(tl);
-	}
-};
-
-/**
- * initFormulas
- *
- * initializes the list of formulas to use
- * 
- * @param formulas the reference to the list of formulas in Map to fill out.
- */
 void initFormulas(map<string, Formula> &formulas) {
 	Formula pole("pole", 5, 3);
 		pole.addIngredient("wood", 1);

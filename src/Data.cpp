@@ -12,6 +12,7 @@ void initBuildingAttrs(Renderer& r, map<string, BuildingAttr*> &attrs) {
 	BuildingAttr* tent = new BuildingAttr("tent", 2, 3, 3, 2);
 	tent->materials.push_back(make_pair("wood", 2));
 	tent->materials.push_back(make_pair("leather", 3));
+	tent->texture = r.loadSurface("res/tileset/tent.png");
 
 	BuildingAttr* lean_to = new BuildingAttr("lean-to", 3, 3, 4, 10);
 	lean_to->materials.push_back(make_pair("wood", 6));

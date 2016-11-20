@@ -10,8 +10,9 @@ using namespace std;
 
 void Building::draw(Renderer& r) {
     SDL_Rect fillRect = {(int) r.displayX(xpos), 
-                         Map::kGroundYPos - type->height * 32,
-                         (int) type->width * 32, (int) type->height * 32};
+                         K_MAP_HEIGHT - type->height * K_TILE_SIZE,
+                         (int) type->width * K_TILE_SIZE,
+                         (int) type->height * K_TILE_SIZE};
 
     // in case the textures aren't loaded, use colored rects
     if (!this->type->texture) {
@@ -24,10 +25,9 @@ void Building::draw(Renderer& r) {
         } else {
         	SDL_SetRenderDrawColor(r.SDLRenderer, 0x00, 0x00, 0x00, 0xFF);
         }
+        SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
     } else {
         SDL_RenderCopy(r.SDLRenderer, this->type->texture, NULL, &fillRect);
     }
-
-    SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
 }
 

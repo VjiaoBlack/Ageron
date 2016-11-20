@@ -19,6 +19,7 @@ using namespace std;
 
 #include "Building.h"
 #include "Data.h"
+#include "Formula.h"
 #include "KeyHandler.h"
 #include "Renderer.h"
 #include "Scenery.h"
@@ -29,6 +30,9 @@ class JobAttr;
 class MaterialAttr;
 class FoodAttr;
 class ToolAttr;
+class Formula;
+
+#define K_MAP_HEIGHT (600 * K_SCREEN_SCALE)
 
 /**
  * Tile
@@ -37,9 +41,6 @@ class ToolAttr;
  */
 class Tile {
 public:
-	static const int kTileWidth = 32;
-	static const int kTileHeight = 32;
-
 	enum TileType {
 		kDirt,
 		kStone,
@@ -82,13 +83,10 @@ class Map {
 public:
     Map() { };
 
-   	static const int kGroundYPos = 600;
-
     bool load(Renderer& r, string filename);
 
     void draw(Renderer& r);
 
-private:
 	vector<Tile> tiles;
 
 	vector<Building*> buildings;
@@ -100,6 +98,9 @@ private:
 	map<string, MaterialAttr*> materialAttr;
 	map<string, FoodAttr*> foodAttr;
 	map<string, ToolAttr*> toolAttr;
+
+	map<string, Formula> formulas;
+
 };
 
 #endif

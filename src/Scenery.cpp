@@ -10,8 +10,9 @@ using namespace std;
 
 void Scenery::draw(Renderer& r) {
     SDL_Rect fillRect = {(int) r.displayX(round(xpos)), 
-                     Map::kGroundYPos - type->height * 32,
-                     (int) type->width * 32, (int) type->height * 32};
+                     K_MAP_HEIGHT - type->height * K_TILE_SIZE,
+                     (int) type->width * K_TILE_SIZE, 
+                     (int) type->height * K_TILE_SIZE};
 
     if (!this->type->texture) {
         if (type->name == "tree") {

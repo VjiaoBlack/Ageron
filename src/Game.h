@@ -40,6 +40,8 @@ public:
     bool init();
 
     void run();
+    void draw();
+    void drawMenu();
 
     bool loadMedia();
 
@@ -47,12 +49,14 @@ public:
 
 private:
     KeyHandler keyHandler;
-    Entity player;
+    Player player;
     Map map;
     TTF_Font* sans;
 
     int numFrames; 
     int passedTime;
+
+    Rect startGame;
 
     std::map<string, int> inventory;
 

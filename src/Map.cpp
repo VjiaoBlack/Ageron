@@ -14,8 +14,8 @@ Tile::Tile(int vegetationLevel, TileType type)
 
 void Tile::draw(Renderer& r, double x) {
     /** TODO: round the width and height or calculate with x and y round offs? */
-	SDL_Rect fillRect = {(int) round(x), Map::kGroundYPos,
-	                     kTileWidth, kTileHeight};
+	SDL_Rect fillRect = {(int) round(x), K_MAP_HEIGHT,
+	                     K_TILE_SIZE, K_TILE_SIZE};
 
 	/** catch case just in case there's no tileset */
 	if (Tile::tileset[this->type] == NULL) {
@@ -61,6 +61,8 @@ bool Map::load(Renderer& r, string filename) {
 	initMaterialAttrs(r, materialAttr);
 	initFoodAttrs(r, foodAttr);
 	initToolAttrs(r, toolAttr);
+	initFormulas(formulas);
+
 
 	Tile::init(r);
 
@@ -92,7 +94,7 @@ bool Map::load(Renderer& r, string filename) {
 		int xpos;
 
 		mapFile >> name >> xpos;
-		scenery.push_back(new Scenery(sceneryAttr[name], xpos * 32));
+		scenery.push_back(new Scenery(sceneryAttr[name], xpos * K_TILE_SIZE));
 	}
 
 	/** read buildings */
@@ -103,7 +105,7 @@ bool Map::load(Renderer& r, string filename) {
 		int xpos;
 
 		mapFile >> name >> xpos;
-		buildings.push_back(new Building(buildingAttr[name], xpos * 32));
+		buildings.push_back(new Building(buildingAttr[name], xpos * K_TILE_SIZE));
 	}
 
 	/** read units */
@@ -120,18 +122,31 @@ bool Map::load(Renderer& r, string filename) {
 }
 
 void Map::draw(Renderer& r) {
+	/** draw sky */
+	SDL_Rect skyRect = {0, 0,
+	                     K_WINDOW_WIDTH, K_MAP_HEIGHT};
+
+    SDL_SetRenderDrawColor(r.SDLRenderer, 0xCC, 0xEE, 0xFF, 0xFF);
+	SDL_RenderFillRect(r.SDLRenderer, &skyRect);
+
 	/** draw all the tiles */
 	for (int i = 0; i < tiles.size(); i++) {
-		tiles[i].draw(r, r.displayX(i * Tile::kTileWidth));
+		tiles[i].draw(r, r.displayX(i * K_TILE_SIZE));
 	}
 
-	/** draw buildings and stuff at offset */
-	for (int i = 0; i < buildings.size(); i++) {
-		buildings[i]->draw(r);
-	}	
+	/** draw space under tiles */
+	SDL_Rect fillRect = {0, K_MAP_HEIGHT + K_TILE_SIZE,
+	                     K_WINDOW_WIDTH, K_WINDOW_HEIGHT - (K_MAP_HEIGHT + K_TILE_SIZE)};
 
+    SDL_SetRenderDrawColor(r.SDLRenderer, 0x33, 0x22, 0x0A, 0xFF);
+	SDL_RenderFillRect(r.SDLRenderer, &fillRect);
+	
+	/** draw buildings and stuff at offset */
 	for (int i = 0; i < scenery.size(); i++) {
 		scenery[i]->draw(r);
 	}
 
+	for (int i = 0; i < buildings.size(); i++) {
+		buildings[i]->draw(r);
+	}	
 }

@@ -22,11 +22,11 @@ int Renderer::displayX(int x) {
 	x += (int) xOffset;
 
 	while (x >= width) {
-		x -= 100 * Tile::kTileWidth;
+		x -= 100 * K_TILE_SIZE;
 	}
 
 	while (x <= 0 - width) {
-		x += 100 * Tile::kTileWidth;
+		x += 100 * K_TILE_SIZE;
 	}
 
 	return x;
@@ -44,7 +44,7 @@ SDL_Texture* Renderer::loadSurface(std::string path) {
 	}
 	else
 	{
-		// Convert surface to screen format
+		// TODO: Convert surface to screen format
 		// optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, NULL );
 		// if( optimizedSurface == NULL )
 		// {
