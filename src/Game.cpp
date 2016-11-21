@@ -311,15 +311,6 @@ void Game::drawResources() {
     int y = startY;
     int w = 0;
     int h = 0;
-    inventory["wood"];
-    inventory["foop"];
-    inventory["doop"];
-    inventory["woo"];
-    inventory["foo"];
-    inventory["doo"];
-    inventory["wo"];
-    inventory["fo"];
-    inventory["do"];
     for (const auto &kv : inventory) {
         string disp = kv.first + " " + to_string(kv.second);
         int old_w = w;
