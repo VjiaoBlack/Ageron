@@ -110,8 +110,8 @@ void Game::update() {
             int minXs = (*it)->xpos + 64;
 
             /** TODO: what to do if multiple overlap */
-            if (minXp >= minXs && minXp <= maxXs ||
-                maxXp >= minXs && maxXp <= maxXs) {
+            if ((minXp >= minXs && minXp <= maxXs) ||
+                (maxXp >= minXs && maxXp <= maxXs)) {
 
                 /** TODO: add SDL_ONE_SECOND magic number */
                 if ((*it)->type->name == "tree") {
