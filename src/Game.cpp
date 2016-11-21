@@ -158,7 +158,7 @@ void Game::drawMenu() {
 
     SDL_Rect fillRect = startGame.getSDLRect();
     TTF_Font *font = TTF_OpenFont("res/UbuntuMono-R.ttf", 100);
-    drawText("play", black, font, fillRect.x, fillRect.y, &fillRect.w, &fillRect.h);
+    drawText("play", black, font, fillRect);
     TTF_CloseFont(font);
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
                            0xFF, 0x00, 0xFF, 0xFF);
@@ -288,34 +288,28 @@ bool Game::loadMedia() {
     return success;
 }
 
-void Game::drawText(string text, SDL_Color color, TTF_Font* font, int x, int y, int* w, int* h) {
+void Game::drawText(string text, SDL_Color color, TTF_Font* font, SDL_Rect &layout) {
     const char* ctext = text.c_str();
     SDL_Surface* surface = TTF_RenderText_Solid(font, ctext, color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
-    SDL_Rect rect = {x, y, 0, 0};
-    TTF_SizeText(font, ctext, &rect.w, &rect.h);
-    if (w != NULL) *w = rect.w;
-    if (h != NULL) *h = rect.h;
-    SDL_RenderCopy(renderer.SDLRenderer, texture, NULL, &rect);
+    TTF_SizeText(font, ctext, &layout.w, &layout.h);
+    SDL_RenderCopy(renderer.SDLRenderer, texture, NULL, &layout);
 }
 
 void Game::drawResources() {
     SDL_Color white = {255, 255, 255};
     const int ybuf = (K_SCREEN_SCALE * K_TILE_SIZE / 2);
     const int startY = K_MAP_HEIGHT + K_TILE_SIZE + ybuf;
-    int x = 10 * K_SCREEN_SCALE;
-    int y = startY;
-    int w = 0;
-    int h = 0;
+    SDL_Rect layout = {10 * K_SCREEN_SCALE, startY, 0, 0};
     for (const auto &kv : inventory) {
         string disp = kv.first + " " + to_string(kv.second);
-        int old_w = w;
-        drawText(disp, white, sans, x, y, &w, &h);
-        w = max(w, old_w);
-        if (y > K_WINDOW_HEIGHT - ( 2 * h) - ybuf) {
-            y = startY;
-            x += w + 20;
+        int old_w = layout.w;
+        drawText(disp, white, sans, layout);
+        layout.w = max(layout.w, old_w);
+        if (layout.y > K_WINDOW_HEIGHT - (2 * layout.h) - ybuf) {
+            layout.y = startY;
+            layout.x += layout.w + (K_SCREEN_SCALE * 20);
         }
-        else y += h;
+        else layout.y += layout.h;
     }
 }

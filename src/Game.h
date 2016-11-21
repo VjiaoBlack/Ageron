@@ -69,15 +69,12 @@ private:
      *
      * Parameters:
      * - text: Text to draw to the screen.
+     * - color: Color to draw the text in.
      * - font: Font to use.
-     * - x: X coordinate.
-     * - y: Y coordinate.
-     * - w: This pointer will be filled with the width of the drawn text. Pass NULL if you don't 
-     *      care.
-     * - h: This pointer will be filled with the height of the drawn text. Pass NULL if you don't
-     *      care.
+     * - layout: The X and Y are used as the origin of the text, the width and height are filled
+     *           with the width and height of the text in the specified font.
      */
-    void drawText(string text, SDL_Color color, TTF_Font* font, int x, int y, int* w, int* h);
+    void drawText(string text, SDL_Color color, TTF_Font* font, SDL_Rect &layout);
 };
 
 #endif
