@@ -4,7 +4,7 @@
  * Victor Jiao (c) 2016
  */
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 class Renderer;
 

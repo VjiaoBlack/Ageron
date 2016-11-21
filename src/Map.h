@@ -7,8 +7,8 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 #include <fstream>
 #include <iostream>
