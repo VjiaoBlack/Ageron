@@ -156,14 +156,10 @@ void Game::drawMenu() {
 
     SDL_Color black = {0, 0, 0};
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "play", black);
-
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surfaceMessage);
-
     SDL_Rect fillRect = startGame.getSDLRect();
-
-    SDL_RenderCopy(renderer.SDLRenderer, Message, NULL, &fillRect);
-
+    TTF_Font *font = TTF_OpenFont("res/UbuntuMono-R.ttf", 100);
+    drawText("play", black, font, fillRect.x, fillRect.y, &fillRect.w, &fillRect.h);
+    TTF_CloseFont(font);
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
                            0xFF, 0x00, 0xFF, 0xFF);
 
@@ -292,12 +288,12 @@ bool Game::loadMedia() {
     return success;
 }
 
-void Game::drawText(string text, SDL_Color color, int x, int y, int* w, int* h) {
+void Game::drawText(string text, SDL_Color color, TTF_Font* font, int x, int y, int* w, int* h) {
     const char* ctext = text.c_str();
-    SDL_Surface* surface = TTF_RenderText_Solid(sans, ctext, color);
+    SDL_Surface* surface = TTF_RenderText_Solid(font, ctext, color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
     SDL_Rect rect = {x, y, 0, 0};
-    TTF_SizeText(sans, ctext, &rect.w, &rect.h);
+    TTF_SizeText(font, ctext, &rect.w, &rect.h);
     if (w != NULL) *w = rect.w;
     if (h != NULL) *h = rect.h;
     SDL_RenderCopy(renderer.SDLRenderer, texture, NULL, &rect);
@@ -314,7 +310,7 @@ void Game::drawResources() {
     for (const auto &kv : inventory) {
         string disp = kv.first + " " + to_string(kv.second);
         int old_w = w;
-        drawText(disp, white, x, y, &w, &h);
+        drawText(disp, white, sans, x, y, &w, &h);
         w = max(w, old_w);
         if (y > K_WINDOW_HEIGHT - ( 2 * h) - ybuf) {
             y = startY;
