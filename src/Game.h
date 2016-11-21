@@ -15,6 +15,7 @@
 #include "KeyHandler.h"
 #include "Map.h"
 #include "Renderer.h"
+#include "Menu.h"
 
 #ifndef _GAME_HXX_
 #define _GAME_HXX_

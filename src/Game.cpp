@@ -152,10 +152,6 @@ void Game::draw() {
 void Game::drawMenu() {
     /** Clear screen */
     map.draw(renderer);
-    SDL_SetRenderDrawBlendMode(renderer.SDLRenderer, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(renderer.SDLRenderer, 0, 0, 0, 0xBB);
-    SDL_Rect wholeRect = {0, 0, K_WINDOW_WIDTH, K_WINDOW_HEIGHT};
-    SDL_RenderFillRect(renderer.SDLRenderer, &wholeRect);
 
     SDL_Color white = {255, 255, 255};
 
@@ -164,16 +160,15 @@ void Game::drawMenu() {
     TTF_SetFontStyle(titleFont, TTF_STYLE_ITALIC | TTF_STYLE_BOLD);
     renderer.drawText("Ageron", white, titleFont, titleRect);
     TTF_CloseFont(titleFont);
-    
-    TTF_Font* itemFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 75);
-    SDL_Rect fillRect = startGame.getSDLRect();
-    renderer.drawText("play", white, itemFont, fillRect);
-    
-    /** Draw outline **/
-    SDL_SetRenderDrawColor(renderer.SDLRenderer,
-                           0xFF, 0x00, 0xFF, 0xFF);
-    SDL_RenderDrawRect(renderer.SDLRenderer, &fillRect);
 
+    SDL_Rect windowFrame = {0, 0, K_WINDOW_WIDTH, K_WINDOW_HEIGHT};
+    TTF_Font* itemFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 75);
+    vector<Menu::MenuItem> items = {
+        Menu::MenuItem("play")
+    };
+    Menu m = Menu(windowFrame, itemFont, items);
+    m.draw(renderer);
+    
     TTF_CloseFont(itemFont);
 
     /** Update screen */
