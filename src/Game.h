@@ -63,6 +63,20 @@ private:
     void update();
 
     void drawResources();
+    
+    /**
+     * Draws text to the screen, automatically sizing it.
+     *
+     * Parameters:
+     * - text: Text to draw to the screen.
+     * - font: Font to use.
+     * - x: X coordinate.
+     * - y: Y coordinate.
+     * - w: This pointer will be filled with the width of the drawn text. Pass NULL if you don't 
+     *      care.
+     * - h: This pointer will be filled with the height of the drawn text. Pass NULL if you don't
+     *      care.
+     */
     void drawText(string text, SDL_Color color, TTF_Font* font, int x, int y, int* w, int* h);
 };
 
