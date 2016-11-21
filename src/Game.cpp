@@ -151,20 +151,23 @@ void Game::draw() {
 
 void Game::drawMenu() {
     /** Clear screen */
-    SDL_SetRenderDrawColor(renderer.SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer.SDLRenderer);
+    map.draw(renderer);
+    SDL_SetRenderDrawBlendMode(renderer.SDLRenderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer.SDLRenderer, 0, 0, 0, 0xBB);
+    SDL_Rect wholeRect = {0, 0, K_WINDOW_WIDTH, K_WINDOW_HEIGHT};
+    SDL_RenderFillRect(renderer.SDLRenderer, &wholeRect);
 
-    SDL_Color black = {0, 0, 0};
+    SDL_Color white = {255, 255, 255};
 
     SDL_Rect titleRect = {100 * K_SCREEN_SCALE, 100 * K_SCREEN_SCALE, 0, 0};
     TTF_Font* titleFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 175);
     TTF_SetFontStyle(titleFont, TTF_STYLE_ITALIC | TTF_STYLE_BOLD);
-    drawText("Ageron", black, titleFont, titleRect);
+    drawText("Ageron", white, titleFont, titleRect);
     TTF_CloseFont(titleFont);
     
     TTF_Font* itemFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 75);
     SDL_Rect fillRect = startGame.getSDLRect();
-    drawText("play", black, itemFont, fillRect);
+    drawText("play", white, itemFont, fillRect);
     
     /** Draw outline **/
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
@@ -264,6 +267,7 @@ void Game::run() {
         if (keyHandler.isKeyDown(SDLK_q)) {
             quit = true;
         }
+        
         update();
 
         draw();
