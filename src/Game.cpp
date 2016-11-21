@@ -60,8 +60,8 @@ bool Game::init() {
     map.load(renderer, K_MAP_FILE_PATH);
 
     /* start game button */
-    startGame = Rect(200 * K_SCREEN_SCALE,400 * K_SCREEN_SCALE,
-                     300 * K_SCREEN_SCALE,100 * K_SCREEN_SCALE);
+    startGame = Rect(200 * K_SCREEN_SCALE, 400 * K_SCREEN_SCALE,
+                     300 * K_SCREEN_SCALE, 100 * K_SCREEN_SCALE);
 
     return success;
 }
@@ -156,14 +156,22 @@ void Game::drawMenu() {
 
     SDL_Color black = {0, 0, 0};
 
+    SDL_Rect titleRect = {100 * K_SCREEN_SCALE, 100 * K_SCREEN_SCALE, 0, 0};
+    TTF_Font* titleFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 175);
+    TTF_SetFontStyle(titleFont, TTF_STYLE_ITALIC | TTF_STYLE_BOLD);
+    drawText("Ageron", black, titleFont, titleRect);
+    TTF_CloseFont(titleFont);
+    
+    TTF_Font* itemFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 75);
     SDL_Rect fillRect = startGame.getSDLRect();
-    TTF_Font *font = TTF_OpenFont("res/UbuntuMono-R.ttf", 100);
-    drawText("play", black, font, fillRect);
-    TTF_CloseFont(font);
+    drawText("play", black, itemFont, fillRect);
+    
+    /** Draw outline **/
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
                            0xFF, 0x00, 0xFF, 0xFF);
-
     SDL_RenderDrawRect(renderer.SDLRenderer, &fillRect);
+
+    TTF_CloseFont(itemFont);
 
     /** Update screen */
     SDL_RenderPresent(renderer.SDLRenderer);
