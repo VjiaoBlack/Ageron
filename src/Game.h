@@ -63,6 +63,7 @@ private:
     void update();
 
     void drawResources();
+    void drawText(string text, SDL_Color color, int x, int y, int* w, int* h);
 };
 
 #endif

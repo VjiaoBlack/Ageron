@@ -47,14 +47,14 @@ bool Game::init() {
         SDL_Quit();
         return 1;
     }
- 
+
     /** this opens a font style and sets a size */
     sans = TTF_OpenFont("res/UbuntuMono-R.ttf", 24);
     numFrames = 0;
     passedTime = 0;
 
     player = Player(K_TILE_SIZE, K_TILE_SIZE * 2, Color(1.0f, 0.0f, 0.0f, 1.0f));
-    player.setXY(400 * K_SCREEN_SCALE, 
+    player.setXY(400 * K_SCREEN_SCALE,
                  400 * K_SCREEN_SCALE);
 
     map.load(renderer, K_MAP_FILE_PATH);
@@ -77,7 +77,7 @@ void Game::update() {
     }
 
     /*
-        If player (TODO: NPCs) is trying to gather resources, then 
+        If player (TODO: NPCs) is trying to gather resources, then
         run appropriate resource-gathering formula.
      */
     if (keyHandler.isKeyDown(SDLK_DOWN)) {
@@ -154,15 +154,15 @@ void Game::drawMenu() {
     SDL_SetRenderDrawColor(renderer.SDLRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer.SDLRenderer);
 
-    SDL_Color black = {0, 0, 0}; 
+    SDL_Color black = {0, 0, 0};
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "play", black); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "play", black);
 
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surfaceMessage); 
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surfaceMessage);
 
     SDL_Rect fillRect = startGame.getSDLRect();
 
-    SDL_RenderCopy(renderer.SDLRenderer, Message, NULL, &fillRect); 
+    SDL_RenderCopy(renderer.SDLRenderer, Message, NULL, &fillRect);
 
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
                            0xFF, 0x00, 0xFF, 0xFF);
@@ -292,36 +292,43 @@ bool Game::loadMedia() {
     return success;
 }
 
+void Game::drawText(string text, SDL_Color color, int x, int y, int* w, int* h) {
+    const char* ctext = text.c_str();
+    SDL_Surface* surface = TTF_RenderText_Solid(sans, ctext, color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
+    SDL_Rect rect = {x, y, 0, 0};
+    TTF_SizeText(sans, ctext, &rect.w, &rect.h);
+    if (w != NULL) *w = rect.w;
+    if (h != NULL) *h = rect.h;
+    SDL_RenderCopy(renderer.SDLRenderer, texture, NULL, &rect);
+}
+
 void Game::drawResources() {
-    SDL_Color black = {0, 0, 0}; 
-
-    string wood("wood" + to_string(inventory["wood"])); 
-    string stone("stone" + to_string(inventory["stone"]));
-    string hay("hay" + to_string(inventory["hay"]));
-    string berries("berries" + to_string(inventory["berries"]));
-
-    SDL_Surface* woodSurf = TTF_RenderText_Solid(sans, wood.c_str(), black);
-    SDL_Surface* stoneSurf = TTF_RenderText_Solid(sans, stone.c_str(), black);
-    SDL_Surface* haySurf = TTF_RenderText_Solid(sans, hay.c_str(), black);
-    SDL_Surface* berriesSurf = TTF_RenderText_Solid(sans, berries.c_str(), black); 
-
-    SDL_Texture* woodMsg    = SDL_CreateTextureFromSurface(renderer.SDLRenderer, woodSurf); 
-    SDL_Texture* stoneMsg   = SDL_CreateTextureFromSurface(renderer.SDLRenderer, stoneSurf); 
-    SDL_Texture* hayMsg     = SDL_CreateTextureFromSurface(renderer.SDLRenderer, haySurf); 
-    SDL_Texture* berriesMsg = SDL_CreateTextureFromSurface(renderer.SDLRenderer, berriesSurf); 
-
-    SDL_Rect msgRect;
-
-    msgRect.x = 100 * K_SCREEN_SCALE;  
-    msgRect.y = 100 * K_SCREEN_SCALE; 
-    msgRect.w = 150 * K_SCREEN_SCALE; 
-    msgRect.h = 50 * K_SCREEN_SCALE; 
-
-    SDL_RenderCopy(renderer.SDLRenderer, woodMsg, NULL, &msgRect); 
-    msgRect.x += 180 * K_SCREEN_SCALE;
-    SDL_RenderCopy(renderer.SDLRenderer, stoneMsg, NULL, &msgRect); 
-    msgRect.x += 180 * K_SCREEN_SCALE;
-    SDL_RenderCopy(renderer.SDLRenderer, hayMsg, NULL, &msgRect); 
-    msgRect.x += 180 * K_SCREEN_SCALE;
-    SDL_RenderCopy(renderer.SDLRenderer, berriesMsg, NULL, &msgRect); 
-}   
+    SDL_Color white = {255, 255, 255};
+    const int ybuf = (K_SCREEN_SCALE * K_TILE_SIZE / 2);
+    const int startY = K_MAP_HEIGHT + K_TILE_SIZE + ybuf;
+    int x = 10 * K_SCREEN_SCALE;
+    int y = startY;
+    int w = 0;
+    int h = 0;
+    inventory["wood"];
+    inventory["foop"];
+    inventory["doop"];
+    inventory["woo"];
+    inventory["foo"];
+    inventory["doo"];
+    inventory["wo"];
+    inventory["fo"];
+    inventory["do"];
+    for (const auto &kv : inventory) {
+        string disp = kv.first + " " + to_string(kv.second);
+        int old_w = w;
+        drawText(disp, white, x, y, &w, &h);
+        w = max(w, old_w);
+        if (y > K_WINDOW_HEIGHT - ( 2 * h) - ybuf) {
+            y = startY;
+            x += w + 20;
+        }
+        else y += h;
+    }
+}
