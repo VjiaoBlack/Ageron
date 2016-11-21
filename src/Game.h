@@ -63,18 +63,6 @@ private:
     void update();
 
     void drawResources();
-    
-    /**
-     * Draws text to the screen, automatically sizing it.
-     *
-     * Parameters:
-     * - text: Text to draw to the screen.
-     * - color: Color to draw the text in.
-     * - font: Font to use.
-     * - layout: The X and Y are used as the origin of the text, the width and height are filled
-     *           with the width and height of the text in the specified font.
-     */
-    void drawText(string text, SDL_Color color, TTF_Font* font, SDL_Rect &layout);
 };
 
 #endif

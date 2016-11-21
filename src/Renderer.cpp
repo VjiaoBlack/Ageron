@@ -58,3 +58,12 @@ SDL_Texture* Renderer::loadSurface(std::string path) {
 	/** return optimizedSurface; */
 	return loadedSurface;
 }
+
+
+void Renderer::drawText(string text, SDL_Color color, TTF_Font* font, SDL_Rect &layout) {
+    const char* ctext = text.c_str();
+    SDL_Surface* surface = TTF_RenderText_Solid(font, ctext, color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(SDLRenderer, surface);
+    TTF_SizeText(font, ctext, &layout.w, &layout.h);
+    SDL_RenderCopy(SDLRenderer, texture, NULL, &layout);
+}

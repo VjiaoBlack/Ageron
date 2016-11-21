@@ -162,12 +162,12 @@ void Game::drawMenu() {
     SDL_Rect titleRect = {100 * K_SCREEN_SCALE, 100 * K_SCREEN_SCALE, 0, 0};
     TTF_Font* titleFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 175);
     TTF_SetFontStyle(titleFont, TTF_STYLE_ITALIC | TTF_STYLE_BOLD);
-    drawText("Ageron", white, titleFont, titleRect);
+    renderer.drawText("Ageron", white, titleFont, titleRect);
     TTF_CloseFont(titleFont);
     
     TTF_Font* itemFont = TTF_OpenFont("res/UbuntuMono-R.ttf", 75);
     SDL_Rect fillRect = startGame.getSDLRect();
-    drawText("play", white, itemFont, fillRect);
+    renderer.drawText("play", white, itemFont, fillRect);
     
     /** Draw outline **/
     SDL_SetRenderDrawColor(renderer.SDLRenderer,
@@ -300,14 +300,6 @@ bool Game::loadMedia() {
     return success;
 }
 
-void Game::drawText(string text, SDL_Color color, TTF_Font* font, SDL_Rect &layout) {
-    const char* ctext = text.c_str();
-    SDL_Surface* surface = TTF_RenderText_Solid(font, ctext, color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
-    TTF_SizeText(font, ctext, &layout.w, &layout.h);
-    SDL_RenderCopy(renderer.SDLRenderer, texture, NULL, &layout);
-}
-
 void Game::drawResources() {
     SDL_Color white = {255, 255, 255};
     const int ybuf = (K_SCREEN_SCALE * K_TILE_SIZE / 2);
@@ -316,7 +308,7 @@ void Game::drawResources() {
     for (const auto &kv : inventory) {
         string disp = kv.first + " " + to_string(kv.second);
         int old_w = layout.w;
-        drawText(disp, white, sans, layout);
+        renderer.drawText(disp, white, sans, layout);
         layout.w = max(layout.w, old_w);
         if (layout.y > K_WINDOW_HEIGHT - (2 * layout.h) - ybuf) {
             layout.y = startY;
