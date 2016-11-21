@@ -9,7 +9,7 @@
 using namespace std;
 
 void initBuildingAttrs(Renderer& r, map<string, BuildingAttr*> &attrs) {
-	BuildingAttr* tent = new BuildingAttr("tent", 2, 3, 3, 2);
+	BuildingAttr* tent = new BuildingAttr("tent", 4, 5, 3, 2);
 	tent->materials.push_back(make_pair("wood", 2));
 	tent->materials.push_back(make_pair("leather", 3));
 	tent->texture = r.loadSurface("res/tileset/tent.png");
@@ -27,7 +27,7 @@ void initBuildingAttrs(Renderer& r, map<string, BuildingAttr*> &attrs) {
 }
 
 void initSceneryAttrs(Renderer& r, map<string, SceneryAttr*> &attrs) {
-	SceneryAttr* tree = new SceneryAttr("tree", 5, 8, 3);
+	SceneryAttr* tree = new SceneryAttr("tree", 8, 11, 3);
 	tree->addResource("wood", 10);
 	tree->texture = r.loadSurface("res/tileset/tree.png");
 
@@ -35,11 +35,11 @@ void initSceneryAttrs(Renderer& r, map<string, SceneryAttr*> &attrs) {
 	berry_bush->addResource("berry", 10);
 	berry_bush->texture = r.loadSurface("res/tileset/berry_bush.png");
 
-	SceneryAttr* dead_tree = new SceneryAttr("dead_tree", 4, 7, 2);
+	SceneryAttr* dead_tree = new SceneryAttr("dead_tree", 7, 10, 2);
 	dead_tree->addResource("wood", 2);
 	dead_tree->texture = r.loadSurface("res/tileset/dead_tree.png");
 
-	SceneryAttr* flower = new SceneryAttr("flower", 1, 2, 0);
+	SceneryAttr* flower = new SceneryAttr("flower", 1, 1, 0);
 	flower->texture = r.loadSurface("res/tileset/flower.png");
 
 	attrs["tree"] = tree;

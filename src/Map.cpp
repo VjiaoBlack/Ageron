@@ -11,11 +11,15 @@ using namespace std;
 Tile::Tile(int vegetationLevel, TileType type)
 		: vegetationLevel(vegetationLevel),
 		  type(type) { }
+		  
+vector <SDL_Texture*> Tile::tileset;
 
 void Tile::draw(Renderer& r, double x) {
     /** TODO: round the width and height or calculate with x and y round offs? */
 	SDL_Rect fillRect = {(int) round(x), K_MAP_HEIGHT,
-	                     K_TILE_SIZE, K_TILE_SIZE};
+	                     K_TILE_SIZE, K_TILE_SIZE * 2};
+
+    SDL_Rect srcRect = {0, 0, K_TILESET_SIZE, K_TILESET_SIZE * 2};
 
 	/** catch case just in case there's no tileset */
 	if (Tile::tileset[this->type] == NULL) {
@@ -26,7 +30,7 @@ void Tile::draw(Renderer& r, double x) {
 			case kStone:
 			    SDL_SetRenderDrawColor(r.SDLRenderer, 0x88, 0x88, 0x88, 0xFF);
 				break;
-			case 2:
+			case kSand:
 			    SDL_SetRenderDrawColor(r.SDLRenderer, 0xCC, 0xCC, 0x00, 0xFF);
 				break;
 			case kWater:
@@ -36,11 +40,12 @@ void Tile::draw(Renderer& r, double x) {
 
 		SDL_RenderDrawRect(r.SDLRenderer, &fillRect);
 	} else {
-		SDL_RenderCopy(r.SDLRenderer, tileset[this->type], NULL, &fillRect);
+		if (type != kDirt) {
+			srcRect.x += K_TILESET_SIZE;
+		}
+		SDL_RenderCopy(r.SDLRenderer, tileset[this->type], &srcRect, &fillRect);
 	}
 }
-
-vector <SDL_Texture*> Tile::tileset;
 
 void Tile::init(Renderer& r) {
 	Tile::tileset.resize(Tile::TileType::kNumTypes);
@@ -63,9 +68,7 @@ bool Map::load(Renderer& r, string filename) {
 	initToolAttrs(r, toolAttr);
 	initFormulas(formulas);
 
-
 	Tile::init(r);
-
 
 	ifstream mapFile;
 	mapFile.open(filename);
@@ -123,22 +126,18 @@ bool Map::load(Renderer& r, string filename) {
 
 void Map::draw(Renderer& r) {
 	/** draw sky */
-	SDL_Rect skyRect = {0, 0,
-	                     K_WINDOW_WIDTH, K_MAP_HEIGHT};
+	SDL_Rect skyRect = {0, 0, K_WINDOW_WIDTH, K_WINDOW_HEIGHT};
 
     SDL_SetRenderDrawColor(r.SDLRenderer, 0xCC, 0xEE, 0xFF, 0xFF);
 	SDL_RenderFillRect(r.SDLRenderer, &skyRect);
 
-	/** draw all the tiles */
-	for (int i = 0; i < tiles.size(); i++) {
-		tiles[i].draw(r, r.displayX(i * K_TILE_SIZE));
-	}
+
 
 	/** draw space under tiles */
-	SDL_Rect fillRect = {0, K_MAP_HEIGHT + K_TILE_SIZE,
+	SDL_Rect fillRect = {0, K_MAP_HEIGHT + 2 * K_TILE_SIZE,
 	                     K_WINDOW_WIDTH, K_WINDOW_HEIGHT - (K_MAP_HEIGHT + K_TILE_SIZE)};
 
-    SDL_SetRenderDrawColor(r.SDLRenderer, 0x33, 0x22, 0x0A, 0xFF);
+    SDL_SetRenderDrawColor(r.SDLRenderer, 0x34, 0x18, 0x1B, 0xFF);
 	SDL_RenderFillRect(r.SDLRenderer, &fillRect);
 	
 	/** draw buildings and stuff at offset */
@@ -149,4 +148,9 @@ void Map::draw(Renderer& r) {
 	for (int i = 0; i < buildings.size(); i++) {
 		buildings[i]->draw(r);
 	}	
+
+		/** draw all the tiles */
+	for (int i = 0; i < tiles.size(); i++) {
+		tiles[i].draw(r, r.displayX(i * K_TILE_SIZE));
+	}
 }

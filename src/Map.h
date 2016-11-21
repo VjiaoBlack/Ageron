@@ -33,6 +33,7 @@ class ToolAttr;
 class Formula;
 
 #define K_MAP_HEIGHT (600 * K_SCREEN_SCALE)
+#define K_TILESET_SIZE 12
 
 /**
  * Tile
